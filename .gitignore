@@ -1,0 +1,15 @@
+# .gitignore
+# Backend
+backend/.env
+backend/vendor/
+backend/storage/logs/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Docker y datos sensibles
+# Si usas volúmenes de Docker
+mdbdata/          
+.env

@@ -1,0 +1,93 @@
+#version: '3.8'  # Versión de sintaxis de Docker Compose
+
+# En producción agregar:
+# backend:
+#   restart: unless-stopped
+#   depends_on:
+#     - db
+
+# frontend:
+#   command: npm run build && npm install -g serve && serve -s build
+
+services:
+  backend:
+    build:
+      context: ./backend  # Construye desde el directorio backend
+      dockerfile: Dockerfile  # Usa el Dockerfile personalizado
+    image: laravel-app  # Nombre de la imagen resultante
+    container_name: app-backend  # Nombre específico del contenedor
+    working_dir: /var/www/html  # Directorio de trabajo dentro del contenedor
+    volumes:
+      - ./backend:/var/www/html  # Monta el código del backend (desarrollo local)
+    networks:
+      - laravel  # Conecta a la red personalizada
+    environment:
+      - DB_HOST=db  # Servicio de base de datos
+      - DB_PORT=3306  # Puerto de MariaDB/MySQL
+      - DB_DATABASE=postDb  # Nombre de la base de datos
+      - DB_USERNAME=root  # Usuario root (¡NO recomendado para producción!)
+      - DB_PASSWORD=root  # Contraseña root (¡NO recomendado para producción!)
+
+  frontend:
+    image: node:18-alpine  # Imagen ligera de Node.js 18
+    container_name: react_frontend
+    working_dir: /app  # Directorio donde se ejecutará npm
+    volumes:
+      - ./frontend:/app  # Monta el código del frontend
+      - /app/node_modules  # Volumen separado para node_modules
+    ports:
+      - "3000:3000"  # Expone el puerto de desarrollo de React/Vue
+    command: sh -c "npm install && npm run dev"  # Instala dependencias e inicia servidor
+    networks:
+      - laravel
+
+  webserver:
+    image: nginx:latest  # Última versión de Nginx
+    container_name: nginx
+    restart: unless-stopped  # Reinicio automático ante fallos
+    ports:
+      - "80:80"  # Puerto estándar HTTP
+    volumes:
+      - ./backend:/var/www/html  # Monta el código del backend
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf  # Configuración personalizada
+    depends_on:
+      - backend  # Espera que backend esté listo primero
+    networks:
+      - laravel
+
+  db:
+    image: mariadb:latest  # Base de datos MariaDB (compatible con MySQL)
+    ports:
+      - 3306:3306  # Puerto expuesto para conexiones externas
+    volumes:
+      - ./mdbdata:/var/lib/mysql  # Persistencia de datos de la DB
+    environment:
+      - DB_HOST=db  # Nombre del servicio (debe coincidir con el de backend)
+      - MYSQL_ROOT_PASSWORD=root  # Contraseña root
+    networks:
+      - laravel
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin  # Interfaz web para administrar DB
+    container_name: phpmyadmin
+    links:
+      - db  # Conecta con el servicio de base de datos
+    environment:
+      PMA_HOST: db  # Servicio de DB a administrar
+      MYSQL_ROOT_PASSWORD: root  # Credenciales de acceso
+    ports:
+      - 8081:80  # Acceso en http://localhost:8081
+    networks:
+      - laravel
+
+  redis:
+    image: redis  # Servidor Redis para caché/colas
+    ports:
+      - 6379:6379  # Puerto estándar de Redis
+    # Nota: Falta conexión a red y configuración de persistencia
+
+networks:
+  laravel:  # Red aislada para todos los servicios
+
+volumes:
+  dbdata:  # Volumen declarado pero no usado (se usa bind mount en db)
