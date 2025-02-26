@@ -12,7 +12,7 @@
 services:
   backend:
     build:
-      context: ./backend  # Construye desde el directorio backend
+      context: . #./backend  # Construye desde el directorio backend
       dockerfile: Dockerfile  # Usa el Dockerfile personalizado
     image: laravel-app  # Nombre de la imagen resultante
     container_name: app-backend  # Nombre específico del contenedor

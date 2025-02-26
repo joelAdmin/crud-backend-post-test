@@ -32,6 +32,25 @@ RUN apt-get update && apt-get install -y \
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring zip exif pcntl
 
+# Crear usuario y grupo www-data si no existen
+RUN groupadd -g 1000 www-data && \
+    useradd -u 1000 -ms /bin/bash -g www-data www-data
+
+# Directorios de Laravel con permisos correctos
+RUN mkdir -p /var/www/html/storage/framework/views \
+    /var/www/html/storage/framework/cache \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/bootstrap/cache
+
+RUN chown -R www-data:www-data /var/www/html/storage \
+    /var/www/html/bootstrap/cache \
+    /var/www/html/storage/framework/views \
+    /var/www/html/storage/framework/cache 
+
+RUN chmod -R 775 /var/www/html/storage \
+    /var/www/html/bootstrap/cache
+
+
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
