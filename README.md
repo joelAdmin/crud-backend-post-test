@@ -59,6 +59,15 @@ docker-compose up -d
 docker-compose ps
 ```
 
+### 3 Generar Documentación API con Swagger
+
+```sh
+docker-compose exec backend composer require darkaonline/l5-swagger
+```
+
+```sh
+docker-compose exec backend php artisan l5-swagger:generate
+```
 
 ---
 
@@ -73,4 +82,6 @@ docker-compose ps
 
 4. **PHPMyAdmin**: Accesible en http://localhost:8080 (usuario: `root`, contraseña: `root`)
 
-¡Listo para clonar y usar! 🎉
+5. **Swagger**: Accesible en http://localhost/api/documentation 
+
+¡Listo para clonar y usar! 

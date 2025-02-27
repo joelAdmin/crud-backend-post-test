@@ -4,6 +4,25 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="PostRequest",
+ *     required={"title", "content"},
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         minLength=5,
+ *         maxLength=255,
+ *         example="Título del post"
+ *     ),
+ *     @OA\Property(
+ *         property="content",
+ *         type="string",
+ *         minLength=10,
+ *         example="Contenido detallado del post..."
+ *     )
+ * )
+ */
 class StorePostRequest extends FormRequest
 {
     /**
