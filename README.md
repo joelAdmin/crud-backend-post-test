@@ -1,9 +1,29 @@
-# CRUD Backend (Posts & Comments) - Laravel 11 + Docker
+# CRUD Backend API REST (Posts & Comments) - Laravel 11 + Docker + Uso de Swagger
 
+[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
 [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://swagger.io)
 
-API RESTful para gestión de posts y comentarios con autenticación JWT mediante Laravel Sanctum.
+API RESTful para gestión de posts y comentarios con autenticación mediante Laravel Sanctum.
+
+## 📂 Estructura del Proyecto
+
+```
+/
+├── .dockerignore
+├── .gitignore
+├── README.md
+├── docker-compose.yml
+├── Dockerfile
+├── nginx/
+│   └── nginx.conf
+├── backend/  (Aplicación Laravel 11)
+│   ├── .env.example
+│   ├── composer.json
+│   └── (estructura de Laravel)
+└── mdbdata/  (Datos de la base de datos, ignorados en Git)
+```
 
 ## 📋 Características
 - CRUD completo para Posts y Comments
@@ -24,4 +44,17 @@ API RESTful para gestión de posts y comentarios con autenticación JWT mediante
 ### 1. Clonar Repositorio
 ```bash
 git clone https://github.com/joelAdmin/crud-backend-post-test.git
-cd crud-backend-post-test
+
+```
+
+### 2. Configurar Docker y Levantar Servicios
+
+```sh
+docker-compose up -d
+```
+
+### 2. Verificar contenedores activos:
+
+```sh
+docker-compose ps
+```
