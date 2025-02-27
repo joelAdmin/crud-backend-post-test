@@ -58,3 +58,19 @@ docker-compose up -d
 ```sh
 docker-compose ps
 ```
+
+
+---
+
+### 📌 Notas Adicionales:
+1. **Rutas API**: En Laravel 11 deberás crear manualmente `routes/api.php` y registrar las rutas en `bootstrap/app.php`.
+
+2. **Seguridad**: 
+   - Cambiar credenciales de DB en producción
+   - Usar variables de entorno para datos sensibles
+
+3. **Frontend**: El directorio `frontend/` está preparado para integrar con React/Vue/Next.js
+
+4. **PHPMyAdmin**: Accesible en http://localhost:8080 (usuario: `root`, contraseña: `root`)
+
+¡Listo para clonar y usar! 🎉
